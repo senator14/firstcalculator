@@ -34,6 +34,7 @@ class ViewController: UIViewController {
         let digit = sender.currentTitle!
         if userIsInTheMiddleOfTypingANumber{
             Display.text = Display.text! + digit
+            digit.rangeOfString(<#aString: String#>, options: <#NSStringCompareOptions#>, range: <#Range<String.Index>?#>, locale: <#NSLocale?#>)
         } else {
             Display.text = digit
             userIsInTheMiddleOfTypingANumber = true
@@ -41,6 +42,37 @@ class ViewController: UIViewController {
         
         
     }
+    
+    @IBAction func operate(sender: UIButton) {
+        let operation = sender.currentTitle!
+        if userIsInTheMiddleOfTypingANumber {
+            enter()
+        }
+        switch operation {
+        case "×": performOperation { $0 * $1 }
+        case "÷": performOperation { $1 / $0 }
+        case "+": performOperation { $0 + $1 }
+        case "−": performOperation { $1 - $0 }
+        case "√": performOperation { sqrt($0) }
+        default: break
+        }
+    }
+    
+    private func performOperation (operation: (Double) -> Double ) {
+        if operandStack.count >= 1 {
+            displayValue = operation (operandStack.removeLast())
+            enter()
+        }
+    }
+        
+    private func performOperation (operation: (Double, Double) -> Double ) {
+        if operandStack.count >= 2 {
+            displayValue = operation (operandStack.removeLast() , operandStack.removeLast())
+            enter()
+        }
+    }
+
+    
     var operandStack = Array <Double>()
     @IBAction func enter() {
         userIsInTheMiddleOfTypingANumber = false
@@ -63,6 +95,4 @@ class ViewController: UIViewController {
         
     }
     
-    @IBAction func operate(sender: UIButton) {
-    }
 }
