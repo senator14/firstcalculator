@@ -28,8 +28,41 @@ import UIKit
 class ViewController: UIViewController {
 
     @IBOutlet weak var Display: UILabel!
+    var userIsInTheMiddleOfTypingANumber: Bool = false
+    
     @IBAction func appendDigit(sender: UIButton) {
-        let digit = sender.currentTitle
+        let digit = sender.currentTitle!
+        if userIsInTheMiddleOfTypingANumber{
+            Display.text = Display.text! + digit
+        } else {
+            Display.text = digit
+            userIsInTheMiddleOfTypingANumber = true
+        }
+        
+        
+    }
+    var operandStack = Array <Double>()
+    @IBAction func enter() {
+        userIsInTheMiddleOfTypingANumber = false
+        operandStack.append( displayValue )
+        println("operandStack = \(operandStack)")
+        
+    }
+    var displayValue :Double {
+        get {
+            return NSNumberFormatter().numberFromString(Display.text!)!.doubleValue
+        }
+        set {
+            Display.text = "\(newValue)"
+            userIsInTheMiddleOfTypingANumber = false
+        }
+    }
+    @IBAction func AC(sender: UIButton) {
+        operandStack.removeAll(keepCapacity: false)
+        Display.text = "0"
+        
     }
     
+    @IBAction func operate(sender: UIButton) {
+    }
 }
