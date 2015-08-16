@@ -33,14 +33,12 @@ class ViewController: UIViewController {
     @IBAction func appendDigit(sender: UIButton) {
         let digit = sender.currentTitle!
         if userIsInTheMiddleOfTypingANumber{
-            Display.text = Display.text! + digit
-            digit.rangeOfString(<#aString: String#>, options: <#NSStringCompareOptions#>, range: <#Range<String.Index>?#>, locale: <#NSLocale?#>)
+            Display.text! += Display.text!.rangeOfString(".") != nil && digit == "." ? "" : digit
         } else {
             Display.text = digit
             userIsInTheMiddleOfTypingANumber = true
         }
-        
-        
+ 
     }
     
     @IBAction func operate(sender: UIButton) {
@@ -50,7 +48,12 @@ class ViewController: UIViewController {
         }
         switch operation {
         case "×": performOperation { $0 * $1 }
-        case "÷": performOperation { $1 / $0 }
+        case "÷":
+            if operandStack.last == 0 {
+                Display.text = "Error"
+            } else {
+                performOperation { $1 / $0 }
+            }
         case "+": performOperation { $0 + $1 }
         case "−": performOperation { $1 - $0 }
         case "√": performOperation { sqrt($0) }
