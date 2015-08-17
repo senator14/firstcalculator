@@ -25,6 +25,7 @@
 
 import UIKit
 
+
 class ViewController: UIViewController {
 
     @IBOutlet weak var Display: UILabel!
@@ -42,6 +43,9 @@ class ViewController: UIViewController {
  
     }
     
+
+    
+    
     @IBAction func operate(sender: UIButton) {
         let operation = sender.currentTitle!
         if userIsInTheMiddleOfTypingANumber {
@@ -58,9 +62,19 @@ class ViewController: UIViewController {
         case "+": performOperation { $0 + $1 }
         case "−": performOperation { $1 - $0 }
         case "√": performOperation { sqrt($0) }
+        case "sin": performOperation { sin($0 * M_PI / 180.00) } // It doesn't return 0 for 180 degrees - needs to be fixed
+        case "cos": performOperation { cos($0 * M_PI / 180.00) } // It doesn't return 0 for 90 degrees - needs to be fixed
+
         default: break
         }
     }
+    
+    @IBAction func Pi(sender: UIButton) {
+        Display.text = "\(M_PI)"
+        operandStack.append(M_PI)
+        
+    }
+    
     
     private func performOperation (operation: (Double) -> Double ) {
         if operandStack.count >= 1 {
@@ -69,7 +83,7 @@ class ViewController: UIViewController {
         }
     }
         
-    func performOperation (operation: (Double, Double) -> Double ) {
+    private func performOperation (operation: (Double, Double) -> Double ) {
         if operandStack.count >= 2 {
             displayValue = operation (operandStack.removeLast() , operandStack.removeLast())
             enter()
