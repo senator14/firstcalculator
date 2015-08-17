@@ -34,6 +34,7 @@ class ViewController: UIViewController {
         let digit = sender.currentTitle!
         if userIsInTheMiddleOfTypingANumber{
             Display.text! += Display.text!.rangeOfString(".") != nil && digit == "." ? "" : digit
+            
         } else {
             Display.text = digit
             userIsInTheMiddleOfTypingANumber = true
@@ -68,7 +69,7 @@ class ViewController: UIViewController {
         }
     }
         
-    private func performOperation (operation: (Double, Double) -> Double ) {
+    func performOperation (operation: (Double, Double) -> Double ) {
         if operandStack.count >= 2 {
             displayValue = operation (operandStack.removeLast() , operandStack.removeLast())
             enter()
