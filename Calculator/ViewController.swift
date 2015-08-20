@@ -61,10 +61,9 @@ class ViewController: UIViewController {
             }
         case "+": performOperation { $0 + $1 }
         case "−": performOperation { $1 - $0 }
+        case "sin": performOperation { __sinpi($0/180) }
+        case "cos": performOperation { __cospi($0/180) }
         case "√": performOperation { sqrt($0) }
-        case "sin": performOperation { sin($0 * M_PI / 180.00) } // It doesn't return 0 for 180 degrees - needs to be fixed
-        case "cos": performOperation { cos($0 * M_PI / 180.00) } // It doesn't return 0 for 90 degrees - needs to be fixed
-
         default: break
         }
     }
